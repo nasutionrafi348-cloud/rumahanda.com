@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RumahKu — Jual Beli Rumah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --text:#1b1f24; --muted:#6b7280;
+    --accent:#1a7f5a; --accent-dark:#145f44; --border:#e5e7eb;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f1115; --card:#181b21; --text:#f0f1f3; --muted:#9aa1ab; --border:#2a2e36;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1115; --card:#181b21; --text:#f0f1f3; --muted:#9aa1ab; --border:#2a2e36;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0; font-family:'Inter',Arial,sans-serif; background:var(--bg); color:var(--text);
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  h1,h2,.logo{font-family:'Poppins',Arial,sans-serif;}
+  header{
+    background:var(--card); border-bottom:1px solid var(--border);
+    padding:16px 20px; position:sticky; top:0; padding-top:calc(16px + env(safe-area-inset-top,0px));
+    z-index:10; backdrop-filter:blur(6px);
+  }
+  .header-row{display:flex; align-items:center; justify-content:space-between; max-width:1100px; margin:0 auto;}
+  .logo{font-size:20px; font-weight:700; color:var(--accent); letter-spacing:-.3px;}
+  .header-contact{
+    display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--accent);
+    text-decoration:none; background:rgba(26,127,90,.10); padding:8px 14px; border-radius:20px;
+    transition:background .15s;
+  }
+  .header-contact:hover{background:rgba(26,127,90,.18);}
+  .fab{
+    position:fixed; right:20px; bottom:calc(20px + env(safe-area-inset-bottom,0px)); z-index:20;
+    background:#25D366; color:#fff; width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:26px; text-decoration:none;
+    box-shadow:0 8px 20px rgba(0,0,0,.25); transition:transform .15s;
+  }
+  .fab:hover{transform:scale(1.08);}
+  .hero{
+    max-width:1100px; margin:0 auto; padding:44px 20px 28px;
+    background:linear-gradient(135deg, rgba(26,127,90,.10), rgba(26,127,90,0) 60%);
+    border-radius:0 0 24px 24px;
+  }
+  .hero h1{font-size:30px; margin-bottom:8px; letter-spacing:-.5px;}
+  .hero p{color:var(--muted); margin-top:0; font-size:15px;}
+  .search-box{
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:14px; display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;
+    box-shadow:0 8px 24px rgba(20,30,25,.06);
+  }
+  .search-box input, .search-box select{
+    flex:1; min-width:120px; padding:11px 12px; border-radius:9px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-size:14px; transition:border-color .15s;
+  }
+  .search-box input:focus, .search-box select:focus{outline:none; border-color:var(--accent);}
+  .search-box button{
+    padding:11px 22px; background:var(--accent); color:#fff; border:none; border-radius:9px;
+    font-weight:600; cursor:pointer; font-size:14px; transition:background .15s, transform .1s;
+  }
+  .search-box button:hover{background:var(--accent-dark);}
+  .search-box button:active{transform:scale(.97);}
+  .container{max-width:1100px; margin:0 auto; padding:0 20px 40px;}
+  .results-count{color:var(--muted); font-size:14px;}
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; margin:28px 0 14px; flex-wrap:wrap; gap:6px;}
+  .section-title{font-size:19px; margin:0;}
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;
+  }
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden;
+    cursor:pointer; transition:transform .18s, box-shadow .18s; display:flex; flex-direction:column;
+  }
+  .card:hover{transform:translateY(-4px); box-shadow:0 14px 28px rgba(20,30,25,.10);}
+  .card-img{height:150px; background:linear-gradient(135deg,#cfe8dd,#8fcbb0); display:flex; align-items:center; justify-content:center; font-size:40px; position:relative;}
+  .card-badge{
+    position:absolute; top:10px; left:10px; background:rgba(255,255,255,.9); color:var(--accent-dark);
+    font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;
+  }
+  .card-body{padding:16px; flex:1; display:flex; flex-direction:column; gap:6px;}
+  .card-price{font-weight:700; color:var(--accent); font-size:17px;}
+  .card-title{font-weight:600; font-size:15px;}
+  .card-loc{color:var(--muted); font-size:13px;}
+  .card-meta{display:flex; gap:12px; font-size:12px; color:var(--muted); margin-top:6px; padding-top:8px; border-top:1px solid var(--border);}
+  .empty{text-align:center; color:var(--muted); padding:40px 0;}
+
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:flex-start;
+    justify-content:center; z-index:50; overflow-y:auto; padding:20px;
+    opacity:0; transition:opacity .18s;
+  }
+  .overlay.open{display:flex; opacity:1;}
+  .modal{
+    background:var(--card); border-radius:18px; max-width:600px; width:100%; margin-top:20px;
+    overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.25);
+    transform:translateY(12px) scale(.98); transition:transform .2s;
+  }
+  .overlay.open .modal{transform:translateY(0) scale(1);}
+  .modal-img{height:220px; background:linear-gradient(135deg,#cfe8dd,#8fcbb0); display:flex; align-items:center; justify-content:center; font-size:64px;}
+  .modal-body{padding:24px;}
+  .modal-body h2{margin:0 0 4px; font-size:21px;}
+  .modal-price{color:var(--accent); font-size:21px; font-weight:700; margin-bottom:10px;}
+  .modal-loc{color:var(--muted); margin-bottom:16px; font-size:14px;}
+  .spec-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:18px;}
+  .spec{background:var(--bg); border-radius:10px; padding:12px 8px; text-align:center; font-size:12px; color:var(--muted);}
+  .spec b{display:block; font-size:17px; color:var(--text); margin-bottom:2px;}
+  .desc{font-size:14px; line-height:1.65; color:var(--text); margin-bottom:18px;}
+  .contact-btn{
+    display:inline-block; background:var(--accent); color:#fff; padding:12px 20px; border-radius:9px;
+    text-decoration:none; font-weight:600; margin:0 8px 8px 0; border:none; cursor:pointer; font-size:14px;
+    transition:background .15s, transform .1s;
+  }
+  .contact-btn:hover{background:var(--accent-dark);}
+  .contact-btn:active{transform:scale(.97);}
+  .close-btn{
+    background:none; border:1px solid var(--border); color:var(--text); padding:12px 18px; border-radius:9px;
+    cursor:pointer; font-size:14px; margin-bottom:8px;
+  }
+  .seller-info{
+    font-size:14px; color:var(--text); background:var(--bg); border-radius:10px; padding:12px 14px;
+    margin-bottom:16px; display:flex; flex-wrap:wrap; gap:4px 10px; border:1px solid var(--border);
+  }
+  .call-btn{background:var(--accent-dark);}
+  footer{background:var(--card); border-top:1px solid var(--border); padding:32px 20px 0;}
+  .footer-inner{max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; gap:32px; justify-content:space-between;}
+  .footer-col{flex:1; min-width:200px;}
+  .footer-logo{font-family:'Poppins',Arial,sans-serif; font-weight:700; color:var(--accent); font-size:18px; margin-bottom:8px;}
+  .footer-col p{color:var(--muted); font-size:13px; line-height:1.7; margin:4px 0;}
+  .footer-col b{font-size:14px;}
+  .footer-bottom{
+    max-width:1100px; margin:24px auto 0; text-align:center; color:var(--muted); font-size:12px;
+    border-top:1px solid var(--border); padding:16px 20px calc(16px + env(safe-area-inset-bottom,0px));
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="logo">🏡 RumahKu</div>
+    <a class="header-contact" href="https://wa.me/6281299998888" target="_blank" rel="noopener">📞 0812-9999-8888</a>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Temukan Rumah Impian Anda</h1>
+  <p>Cari, bandingkan, dan hubungi penjual langsung — semua dalam satu tempat.</p>
+  <div class="search-box">
+    <input id="q" type="text" placeholder="Cari lokasi, misal: Batam, Jakarta...">
+    <select id="tipe">
+      <option value="">Semua Tipe</option>
+      <option value="Rumah">Rumah</option>
+      <option value="Apartemen">Apartemen</option>
+      <option value="Ruko">Ruko</option>
+    </select>
+    <select id="harga">
+      <option value="">Semua Harga</option>
+      <option value="500">Di bawah Rp500 jt</option>
+      <option value="1000">Rp500 jt - 1 M</option>
+      <option value="99999">Di atas Rp1 M</option>
+    </select>
+    <button onclick="renderList()">Cari</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-head">
+    <h2 class="section-title">Properti Pilihan</h2>
+    <div class="results-count" id="count"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <div class="footer-logo">🏡 RumahKu</div>
+      <p>Marketplace jual beli rumah terpercaya untuk menemukan properti impian Anda.</p>
+    </div>
+    <div class="footer-col">
+      <b>Hubungi Kami</b>
+      <p>📞 0812-9999-8888</p>
+      <p>✉️ halo@rumahku.id</p>
+      <p>📍 Batam, Kepulauan Riau</p>
+    </div>
+  </div>
+  <div class="footer-bottom">Demo website — data properti masih contoh (dummy).</div>
+</footer>
+
+<a class="fab" href="https://wa.me/6281299998888?text=Halo%20RumahKu,%20saya%20ingin%20bertanya" target="_blank" rel="noopener" aria-label="Hubungi kami via WhatsApp">💬</a>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const listings = [
+  {id:1, title:"Rumah Minimalis 2 Lantai", tipe:"Rumah", loc:"Batam Center, Batam", price:650, lt:120, lb:90, kt:3, km:2, desc:"Rumah minimalis 2 lantai di lokasi strategis dekat pusat kota. Cocok untuk keluarga muda, akses mudah ke sekolah dan pasar.", icon:"🏠", seller:"Budi Santoso", phone:"6281234567001"},
+  {id:2, title:"Apartemen Studio Modern", tipe:"Apartemen", loc:"Nagoya, Batam", price:350, lt:0, lb:32, kt:1, km:1, desc:"Apartemen studio dengan fasilitas kolam renang, gym, dan keamanan 24 jam. Ideal untuk profesional muda.", icon:"🏢", seller:"Sinta Wijaya", phone:"6281234567002"},
+  {id:3, title:"Ruko 3 Lantai Siap Usaha", tipe:"Ruko", loc:"Sekupang, Batam", price:1200, lt:80, lb:200, kt:0, km:2, desc:"Ruko strategis di jalan utama, cocok untuk usaha retail atau kantor. Lantai 1 sudah ada partisi.", icon:"🏬", seller:"Hendra Gunawan", phone:"6281234567003"},
+  {id:4, title:"Rumah Asri Dekat Taman", tipe:"Rumah", loc:"Batu Aji, Batam", price:450, lt:100, lb:70, kt:2, km:1, desc:"Rumah nyaman dengan halaman luas, lingkungan asri dan aman, dekat dengan taman kota dan fasilitas umum.", icon:"🏡", seller:"Rina Marlina", phone:"6281234567004"},
+  {id:5, title:"Rumah Mewah Cluster Elite", tipe:"Rumah", loc:"Batam Kota, Batam", price:1800, lt:200, lb:180, kt:4, km:3, desc:"Rumah mewah di cluster eksklusif dengan keamanan 24 jam, taman pribadi, dan carport 2 mobil.", icon:"🏰", seller:"Agus Prasetyo", phone:"6281234567005"},
+  {id:6, title:"Apartemen 2BR View Laut", tipe:"Apartemen", loc:"Bengkong, Batam", price:800, lt:0, lb:65, kt:2, km:2, desc:"Apartemen dengan pemandangan laut, fully furnished, dekat mall dan pusat bisnis.", icon:"🌊", seller:"Dewi Lestari", phone:"6281234567006"}
+];
+
+function formatPhone(p){
+  // 6281234567001 -> 0812-3456-7001
+  const local = "0" + p.slice(2);
+  return local.replace(/(\d{4})(\d{4})(\d+)/, "$1-$2-$3");
+}
+
+function fmtPrice(p){
+  if(p>=1000) return "Rp " + (p/1000).toFixed(1) + " M";
+  return "Rp " + p + " jt";
+}
+
+function renderList(){
+  const q = document.getElementById('q').value.toLowerCase();
+  const tipe = document.getElementById('tipe').value;
+  const harga = document.getElementById('harga').value;
+  let filtered = listings.filter(item=>{
+    let match = true;
+    if(q) match = match && (item.loc.toLowerCase().includes(q) || item.title.toLowerCase().includes(q));
+    if(tipe) match = match && item.tipe===tipe;
+    if(harga==='500') match = match && item.price<500;
+    if(harga==='1000') match = match && item.price>=500 && item.price<=1000;
+    if(harga==='99999') match = match && item.price>1000;
+    return match;
+  });
+  document.getElementById('count').textContent = filtered.length + " properti ditemukan";
+  const grid = document.getElementById('grid');
+  if(filtered.length===0){
+    grid.innerHTML = '<div class="empty">Tidak ada properti yang cocok dengan pencarian Anda.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(item=>`
+    <div class="card" onclick="openModal(${item.id})">
+      <div class="card-img">${item.icon}<span class="card-badge">${item.tipe}</span></div>
+      <div class="card-body">
+        <div class="card-price">${fmtPrice(item.price)}</div>
+        <div class="card-title">${item.title}</div>
+        <div class="card-loc">📍 ${item.loc}</div>
+        <div class="card-meta">
+          ${item.kt?`<span>🛏 ${item.kt} KT</span>`:''}
+          ${item.km?`<span>🚿 ${item.km} KM</span>`:''}
+          <span>📐 ${item.lb} m²</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openModal(id){
+  const item = listings.find(l=>l.id===id);
+  document.getElementById('modal').innerHTML = `
+    <div class="modal-img">${item.icon}</div>
+    <div class="modal-body">
+      <h2>${item.title}</h2>
+      <div class="modal-price">${fmtPrice(item.price)}</div>
+      <div class="modal-loc">📍 ${item.loc}</div>
+      <div class="spec-grid">
+        <div class="spec"><b>${item.lt||'-'}</b>Luas Tanah (m²)</div>
+        <div class="spec"><b>${item.lb}</b>Luas Bangunan (m²)</div>
+        <div class="spec"><b>${item.kt||'-'}</b>Kamar Tidur</div>
+      </div>
+      <div class="desc">${item.desc}</div>
+      <div class="seller-info">👤 ${item.seller} &nbsp;•&nbsp; 📞 ${formatPhone(item.phone)}</div>
+      <a class="contact-btn" href="https://wa.me/${item.phone}?text=Halo,%20saya%20tertarik%20dengan%20${encodeURIComponent(item.title)}" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="contact-btn call-btn" href="tel:+${item.phone}">📞 Telepon</a>
+      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+}
+
+renderList();
+</script>
+</body>
+</html>
